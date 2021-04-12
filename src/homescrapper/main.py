@@ -27,7 +27,7 @@ def site_parse(url, tags):
     # retrieve the url from the web address
     website = requests.get(url)
     # check if status is ok http200
-    print(website)
+    # print(website)
     soup = BeautifulSoup(website.content, 'html.parser')
 
 
@@ -71,7 +71,8 @@ def site_parse(url, tags):
     # We order the list by its most recent element: we must order a list with nested dictionary by one elem of the dict
     sorted_annonces = sorted(annonces_list, key=lambda k: k['maj_date'], reverse=True)
 
-    print(annonces_list)
-    print(sorted_annonces)
+    return sorted_annonces
+    # print(annonces_list)
+    # print(sorted_annonces)
 
 site_parse(site_url, annonce_tags)
