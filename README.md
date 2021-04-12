@@ -1,4 +1,4 @@
-# Property Scrapper is a project I wrote to do a little coding workout.
+# Property Scrapper is a project I write to help me find my new home in France
 
 ## main goal
 It's objective is mainly to scrap some property listing websites in France to look for new properties.
