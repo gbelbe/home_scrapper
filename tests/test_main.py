@@ -1,3 +1,6 @@
+import sys
+sys.path.insert(0, '../src/')
+
 from homescrapper.main import site_parse
 
 def test_site_parse():
