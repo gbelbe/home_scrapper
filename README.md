@@ -1,5 +1,7 @@
 # Property Scrapper is a project I write to help me find my new home in France
 
+[![Python application](https://github.com/gbelbe/property-scrapper/actions/workflows/python-app.yml/badge.svg)](https://github.com/gbelbe/property-scrapper/actions/workflows/python-app.yml)
+
 ## main goal
 It's objective is mainly to scrap some property listing websites in France to look for new properties.
 Currently with Covid19 it's getting very difficult to find a property as nobody sells their home. 
