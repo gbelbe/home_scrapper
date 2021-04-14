@@ -75,4 +75,4 @@ def site_parse(url, tags):
     # print(annonces_list)
     # print(sorted_annonces)
 
-site_parse(site_url, annonce_tags)
+print(site_parse(site_url, annonce_tags))
