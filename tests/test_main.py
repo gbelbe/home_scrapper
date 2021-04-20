@@ -1,7 +1,7 @@
 import sys
+from homescrapper.kerrentree import ParseSite
 sys.path.insert(0, '../src/homescrapper/')
 
-from homescrapper.main import ParseSite
 
 def test_site_parse():
     site_url = "http://www.kerentree-immobilier.fr/recherche,basic.htm?idp=568148&idtt=2&idtypebien=2"
