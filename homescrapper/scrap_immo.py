@@ -5,6 +5,7 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
+BASE_URL = "https://www.cabinetrozennmelscoet.com"
 LIST_URL = "https://www.cabinetrozennmelscoet.com/a-vendre/1"
 LIST_TAG = "li"
 LIST_TAG_CLASS = "col-xs-12 col-sm-6 col-md-12 panelBien"
@@ -15,7 +16,9 @@ ELEMENTS = {
     "img_tag": "img",
     "img_tag_class": "",
     "price_tag": "span",
+    "price_tag_class": "price",
     "link_tag": "div",
+    "link_tag_class": "col-xs-12 col-md-4 panel-heading",
     "date_tag": "date",
 }
 
@@ -23,7 +26,8 @@ ELEMENTS = {
 class SiteParse():
     """parse l\'url d\'un site d'immobilier"""
 
-    def __init__(self, list_url, list_tag, list_tag_class=''):
+    def __init__(self, base_url, list_url, list_tag, list_tag_class=''):
+        self.base_url = base_url
         self.list_url = list_url
         self.list_tag = list_tag
         self.list_tag_class = list_tag_class
@@ -53,16 +57,18 @@ class SiteParse():
 
 
 class RozennSiteParse(SiteParse):
-    def __init__(self, list_url, list_tag, list_tag_class, elements):
+    def __init__(self, base_url, list_url, list_tag, list_tag_class, elements):
         # initialize list_url, tag and class from Parse_Site
-        super().__init__(list_url, list_tag, list_tag_class)
+        super().__init__(base_url, list_url, list_tag, list_tag_class)
 
         self.id_tag = elements["id_tag"]
         self.id_tag_class = elements["id_tag_class"]
         self.img_tag = elements["img_tag"]
         self.img_tag_class = elements["img_tag_class"]
-        # self.price_tag = elements["price_tag"]
-        # self.link_tag = elements["link_tag"]
+        self.price_tag = elements["price_tag"]
+        self.price_tag_class = elements["price_tag_class"]
+        self.link_tag = elements["link_tag"]
+        self.link_tag_class = elements["link_tag_class"]
         # self.date_tag = elements["date_tag"]
 
         # Store list of annonces from each div element
@@ -81,10 +87,21 @@ class RozennSiteParse(SiteParse):
             id_annonce = word_list[1]
             annonce_dict["id"] = id_annonce
 
+            price = elem.find(name=self.price_tag, itemprop=self.price_tag_class)
+            price = price["content"]
+            annonce_dict["price"] = price
+
             img = elem.find(name=self.img_tag, class_=self.img_tag_class)
             src = img['src']
             img = "http:" + src
             annonce_dict["img"] = img
+
+            link = elem.find(name=self.link_tag, class_=self.link_tag_class)["onclick"]
+            stripped_link = link.replace("location.href=\'", self.base_url)
+            last_quote = stripped_link[-1]
+            link_without_final_quote = stripped_link.strip(last_quote)
+            # print(link_without_final_quote)
+            annonce_dict["url"] = link_without_final_quote
 
             # TODO: continue with other elements of the list from rozenn.py
 
@@ -105,7 +122,7 @@ class RozennSiteParse(SiteParse):
             #
 
 # instantiate an object annonces from class Rozenn
-annonces = RozennSiteParse(LIST_URL, LIST_TAG, LIST_TAG_CLASS, ELEMENTS)
+annonces = RozennSiteParse(BASE_URL, LIST_URL, LIST_TAG, LIST_TAG_CLASS, ELEMENTS)
 
 # print what is returned from site_parse method of annonces object
 print(annonces.site_parse())
