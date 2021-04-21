@@ -73,7 +73,7 @@ class ParseSite():
 
 
             img = tag.find("img")
-            print(img['src'])
+            # print(img['src'])
 
             # annonce_dict["img"] = img['src']
             # print(annonce_dict["img"])
