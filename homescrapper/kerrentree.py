@@ -92,7 +92,7 @@ class ParseSite():
             titre = lien.get("title")
 
             annonce_dict["url"] = url
-            # annonce_dict["titre"] = titre
+            annonce_dict["titre"] = titre
 
             annonces_list.append(annonce_dict)
 

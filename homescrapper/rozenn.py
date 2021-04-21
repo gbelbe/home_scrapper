@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 # import regular expressions
 import re
 
+
 # URL = "http://www.kerentree-immobilier.fr/recherche,basic.htm?idp=568148&idtt=2&idtypebien=2"
 # LIST_TAG = "div"
 # LIST_TAG_CLASS = "btn btn-important btn-block bouton-ajouter-selection-detail btn-tooltip not-log"
@@ -19,18 +20,16 @@ URL = "https://www.cabinetrozennmelscoet.com/a-vendre/1"
 LIST_TAG = "li"
 LIST_TAG_CLASS = "col-xs-12 col-sm-6 col-md-12 panelBien"
 REF_LABEL = "ref"
-REGEX = ""
 
 class ParseSite():
     """parse l\'url d\'un site d'immobilier"""
 
-    def __init__(self, url, list_tag, list_tag_class, ref_label, regex=""):
+    def __init__(self, url, list_tag, list_tag_class, ref_label):
         self.url = url
         # self.main_tag = main_tag
         self.list_tag = list_tag
         self.list_tag_class = list_tag_class
         self.ref_label = ref_label
-        self.regex = regex
 
 
     def site_parse(self):
@@ -50,17 +49,8 @@ class ParseSite():
 
         # Grab all div tags with ID starting with "annonceXXX", that is showing the recap infos from the houses
 
-        if self.regex != "":
-            print("ya du regex")
-            # print(f"id=re.compile({self.regex})")
-            a = "id=re.compile("+self.regex+")"
-            # print(a)
 
-            div_tag = soup.find_all(name=self.list_tag, id=re.compile(self.regex))
-
-        else:
-            print('pas de regex')
-            div_tag = soup.find_all(name=self.list_tag, class_=self.list_tag_class)
+        div_tag = soup.find_all(name=self.list_tag, class_=self.list_tag_class)
 
 
         annonces_list = []
@@ -78,11 +68,27 @@ class ParseSite():
             annonce_dict["id"] = ref
 
 
-            # img = tag.find("img")
-            # print(img['src'])
+            img = tag.find("img")
+            src = img['src']
+            img = "http:" + src
+            annonce_dict["img"] = img
 
-            # annonce_dict["img"] = img['src']
-            # print(annonce_dict["img"])
+
+            prix = tag.find("span", itemprop="price")
+            prix = prix["content"]
+            annonce_dict["prix"] = prix
+
+            link = tag.find("div", class_="col-xs-12 col-md-4 panel-heading")["onclick"]
+            stripped_link = link.replace("location.href=\'", "https://www.cabinetrozennmelscoet.com")
+            last_quote = stripped_link[-1]
+            link_without_final_quote = stripped_link.strip(last_quote)
+            # print(link_without_final_quote)
+            annonce_dict["url"] = link_without_final_quote
+
+            annonces_list.append(annonce_dict)
+
+        return annonces_list
+
 
             # annonce_dict["long_desc"] = img['longdesc']
 
@@ -100,7 +106,7 @@ class ParseSite():
             # annonce_dict["url"] = url
             # annonce_dict["titre"] = titre
 
-            annonces_list.append(annonce_dict)
+
 
         # We order the list by its most recent element: we must order a list with nested dictionary by one elem of the dict
         # sorted_annonces = sorted(annonces_list, key=lambda k: k['maj_date'], reverse=True)
@@ -114,5 +120,3 @@ annonces = ParseSite(URL, LIST_TAG, LIST_TAG_CLASS, REF_LABEL, )
 
 print(annonces.site_parse())
 
-
-# print(site_parse(site_url, annonce_tags))
