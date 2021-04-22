@@ -5,26 +5,8 @@ from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
 
-BASE_URL = "https://www.cabinetrozennmelscoet.com"
-LIST_URL = "https://www.cabinetrozennmelscoet.com/a-vendre/1"
-LIST_TAG = "li"
-LIST_TAG_CLASS = "col-xs-12 col-sm-6 col-md-12 panelBien"
-REF_LABEL = "ref"
-ELEMENTS = {
-    "id_tag": "span",
-    "id_tag_class": "ref",
-    "img_tag": "img",
-    "img_tag_class": "",
-    "price_tag": "span",
-    "price_tag_class": "price",
-    "link_tag": "div",
-    "link_tag_class": "col-xs-12 col-md-4 panel-heading",
-    "date_tag": "date",
-}
-
-
-class SiteParse():
-    """parse l\'url d\'un site d'immobilier"""
+class SiteParse:
+    """parse l\'url d\'un site d'immobilier et renvoie un objet BeautifulSoup"""
 
     def __init__(self, base_url, list_url, list_tag, list_tag_class=''):
         self.base_url = base_url
@@ -55,8 +37,11 @@ class SiteParse():
 
         return self.html_list_elems
 
+class ListParse(SiteParse):
+    """retrieve the HTMl from a site parsed with BeautifulSoup and retrieve the List
+    a list of dictionaries with elements of home"""
 
-class RozennSiteParse(SiteParse):
+
     def __init__(self, base_url, list_url, list_tag, list_tag_class, elements):
         # initialize list_url, tag and class from Parse_Site
         super().__init__(base_url, list_url, list_tag, list_tag_class)
@@ -69,63 +54,36 @@ class RozennSiteParse(SiteParse):
         self.price_tag_class = elements["price_tag_class"]
         self.link_tag = elements["link_tag"]
         self.link_tag_class = elements["link_tag_class"]
-        # self.date_tag = elements["date_tag"]
-
+        self.date_tag = elements["date_tag"]
+        self.date_tag_class = elements["date_tag_class"]
         # Store list of annonces from each div element
         self.annonces_list = []
 
-    def site_parse(self):
-        # retrieve site_parse method from ParseSite Parent Class
+    def list_parse(self):
+        """retrieve html elements of each element of the list"""
 
         html_list_elems = super().site_parse()
 
         for elem in html_list_elems:
             annonce_dict = {}
+
             id_annonce = elem.find(name=self.id_tag, class_=self.id_tag_class)
-            html_stripped_text = id_annonce.get_text()
-            word_list = html_stripped_text.split()
-            id_annonce = word_list[1]
             annonce_dict["id"] = id_annonce
 
             price = elem.find(name=self.price_tag, itemprop=self.price_tag_class)
-            price = price["content"]
             annonce_dict["price"] = price
 
             img = elem.find(name=self.img_tag, class_=self.img_tag_class)
-            src = img['src']
-            img = "http:" + src
             annonce_dict["img"] = img
 
-            link = elem.find(name=self.link_tag, class_=self.link_tag_class)["onclick"]
-            stripped_link = link.replace("location.href=\'", self.base_url)
-            last_quote = stripped_link[-1]
-            link_without_final_quote = stripped_link.strip(last_quote)
-            # print(link_without_final_quote)
-            annonce_dict["url"] = link_without_final_quote
+            link = elem.find(name=self.link_tag, class_=self.link_tag_class)
+            annonce_dict["url"] = link
 
-            # TODO: continue with other elements of the list from rozenn.py
-
+            date = elem.find(name=self.date_tag, class_=self.date_tag_class)
+            annonce_dict["date"] = date
 
             self.annonces_list.append(annonce_dict)
+
         return self.annonces_list
-            # annonce_dict["id"] = id_annonce
-            #
-            # annonce_dict["id"] = tag.find(self.id_tag)
-            # annonce_dict["img"] = tag.find(self.img_tag)
-            #
-            # annonce_dict["price"] = tag.find(self.price_tag)
-            #
-            # annonce_dict["link"] = tag.find(self.link_tag)
-            #
-            # annonce_dict["date"] = tag.find(self.date_tag)
-            #
-            #
 
-# instantiate an object annonces from class Rozenn
-annonces = RozennSiteParse(BASE_URL, LIST_URL, LIST_TAG, LIST_TAG_CLASS, ELEMENTS)
 
-# print what is returned from site_parse method of annonces object
-print(annonces.site_parse())
-
-# print(help(Rozenn))
-# print(annonces.site_parse())
