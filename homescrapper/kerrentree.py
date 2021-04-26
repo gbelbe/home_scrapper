@@ -12,6 +12,7 @@ ELEMENTS = {
     "img_tag": "img",
     "img_tag_class": "recherche-annonces-photo",
     "price_tag": "span",
+    "price_tag_property": "itemprop",
     "price_tag_class": "price",
     "link_tag": "a",
     "link_tag_class": "recherche-annonces-lien",
@@ -20,31 +21,6 @@ ELEMENTS = {
 }
 
 
-
-        # # retrieve the url from the web address
-        # website = requests.get(self.url)
-        # # check if status is ok http200
-        # # print(website)
-        # soup = BeautifulSoup(website.content, 'html.parser')
-        # # print(soup)
-        #
-        # # Grab all div tags with ID starting with "annonceXXX", that is showing the recap infos from the houses
-        #
-        #
-        #
-        # div_tag = soup.find_all(name=self.list_tag, id=re.compile(self.regex))
-        #
-        #
-        #     id_annonce = tag.find(name=self.list_tag, class_=self.list_tag_class)[self.ref_label]
-        #
-        #     annonce_dict["id"] = id_annonce
-        #
-        #
-        #     img = tag.find("img")
-        #     # print(img['src'])
-        #
-        #     # annonce_dict["img"] = img['src']
-        #     # print(annonce_dict["img"])
         #
         #     # annonce_dict["long_desc"] = img['longdesc']
         #
@@ -63,7 +39,6 @@ ELEMENTS = {
         #
         # return sorted_annonces
         #
-        #
 
 class KerrentreeSiteParse(ListParse):
     def __init__(self, base_url, list_url, list_tag, list_tag_class, elements):
@@ -81,7 +56,7 @@ class KerrentreeSiteParse(ListParse):
             annonce_dict = {}
 
             annonce_dict['id'] = elem['id'].get_text().split()[2]
-            string_price = elem['price'].get_text()
+            string_price = elem['price']
             annonce_dict['price'] = re.sub(r"[\n\t\s]*", "", string_price)
             annonce_dict['img'] = elem['img']['src']
             annonce_dict['url'] = elem['url']['href']

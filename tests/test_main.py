@@ -13,8 +13,8 @@ LIST_TAG = "li"
 LIST_TAG_CLASS = "col-xs-12 col-sm-6 col-md-12 panelBien"
 REF_LABEL = "ref"
 ELEMENTS = {
-    "id_tag": "span",
-    "id_tag_class": "ref",
+    "id_tag": "img",
+    "id_tag_class": " lazyloaded",
     "img_tag": "img",
     "img_tag_class": "",
     "price_tag": "span",

@@ -51,6 +51,12 @@ class ListParse(SiteParse):
         self.img_tag = elements["img_tag"]
         self.img_tag_class = elements["img_tag_class"]
         self.price_tag = elements["price_tag"]
+
+        if "price_tag_property" in elements:
+            self.price_tag_property = elements["price_tag_property"]
+        else:
+            self.price_tag_property = ""
+
         self.price_tag_class = elements["price_tag_class"]
         self.link_tag = elements["link_tag"]
         self.link_tag_class = elements["link_tag_class"]
@@ -70,8 +76,18 @@ class ListParse(SiteParse):
             id_annonce = elem.find(name=self.id_tag, class_=self.id_tag_class)
             annonce_dict["id"] = id_annonce
 
-            price = elem.find(name=self.price_tag, itemprop=self.price_tag_class)
+
+            # manage the case that the price div tag has a property "itemprop" instead of the traditional "class" property
+            # we default as "class" as it is the standard
+
+            if self.price_tag_property == 'itemprop':
+                price = elem.find(name=self.price_tag, itemprop=self.price_tag_class)
+            else:
+                price = elem.find(name=self.price_tag, class_=self.price_tag_class)
+
+            price = price.get_text().replace(" ", "")
             annonce_dict["price"] = price
+
 
             img = elem.find(name=self.img_tag, class_=self.img_tag_class)
             annonce_dict["img"] = img

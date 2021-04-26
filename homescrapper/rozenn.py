@@ -10,6 +10,7 @@ ELEMENTS = {
     "img_tag": "img",
     "img_tag_class": "",
     "price_tag": "span",
+    "price_tag_property": "itemprop",
     "price_tag_class": "price",
     "link_tag": "div",
     "link_tag_class": "col-xs-12 col-md-4 panel-heading",
@@ -22,10 +23,12 @@ class RozennSiteParse(ListParse):
     def __init__(self, base_url, list_url, list_tag, list_tag_class, elements):
         # initialize list_url, tag and class from Parse_Site
         super().__init__(base_url, list_url, list_tag, list_tag_class, elements)
+        # self.price_tag_class = elements['price_tag_property']
 
     def rozenn_site_parse(self):
         # retrieve site_parse method from ParseSite Parent Class
         annonces_list = []
+
 
         html_list_elems = super().list_parse()
 
@@ -34,7 +37,9 @@ class RozennSiteParse(ListParse):
             annonce_dict = {}
 
             annonce_dict['id'] = elem['id'].get_text().split()[1]
-            annonce_dict['price'] = elem['price']["content"]
+
+            annonce_dict['price'] = elem['price']
+
             annonce_dict['img'] = "http:" + elem['img']['src']
             annonce_dict['url'] = elem['url']["onclick"].replace("location.href=\'", self.base_url).strip("\'")
 
