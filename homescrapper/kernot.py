@@ -7,10 +7,8 @@ LIST_URL = "https://kernot.notaires.fr/annonces-immobilieres-SELARL-KERNOT-PAYS-
 LIST_TAG = "div"
 LIST_TAG_CLASS = "bloc-annonce img-txt"
 ELEMENTS = {
-    "id_tag": "",
-    "id_tag_class": "",
     "img_tag": "img",
-    "img_tag_class": " lazyloaded",
+    "img_tag_class": "lazyload",
     "price_tag": "div",
     "price_tag_class": "immo-prix pull-right display-resp",
     "link_tag": "a",
@@ -33,16 +31,20 @@ class KernotSiteParse(ListParse):
 
         for elem in html_list_elems:
 
-            print(elem)
             annonce_dict = {}
 
             # annonce_dict['price'] = elem['price']
 
-            # annonce_dict['id'] = elem['id']
             # print(annonce_dict)
             # string_price = elem['price'].get_text()
-            # annonce_dict['price'] = elem['price'].get_text()
-            # annonce_dict['img'] = elem['img']['src']
+
+
+
+            price = elem['price']
+            special_char = '€'
+            annonce_dict['price'] = price.split(special_char, 1)[0]
+
+            annonce_dict['img'] = elem['img']['data-src']
             annonce_dict['url'] = elem['url']['href']
             # date = elem['date'].get_text()
             # date = date.strip().split()

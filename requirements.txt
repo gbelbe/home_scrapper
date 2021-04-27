@@ -1,3 +1,4 @@
 requests~=2.25.1
 beautifulsoup4~=4.9.3
+mechanicalsoup>=1.0.0
 setuptools~=54.2.0

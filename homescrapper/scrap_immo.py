@@ -26,9 +26,11 @@ class SiteParse:
         # retrieve the url from the web address
         website = requests.get(self.list_url)
         # check if status is ok http200
-        # print(website)
+        print(website)
         soup = BeautifulSoup(website.content, 'html.parser')
-        # print(soup)
+        # soup = soup.prettify()
+        print(soup)
+
 
         # Grab all div tags with ID starting with "annonceXXX", that is showing the recap infos from the houses
 
@@ -46,22 +48,46 @@ class ListParse(SiteParse):
         # initialize list_url, tag and class from Parse_Site
         super().__init__(base_url, list_url, list_tag, list_tag_class)
 
-        self.id_tag = elements["id_tag"]
-        self.id_tag_class = elements["id_tag_class"]
-        self.img_tag = elements["img_tag"]
-        self.img_tag_class = elements["img_tag_class"]
-        self.price_tag = elements["price_tag"]
+        print(elements)
+
+        if "id_tag" in elements:
+            self.id_tag = elements["id_tag"]
+        else:
+            self.id_tag = ""
+
+        if "id_tag_class" in elements:
+            self.id_tag_class = elements["id_tag_class"]
+
+        if "img_tag" in elements:
+            self.img_tag = elements["img_tag"]
+        if "img_tag_class" in elements:
+            self.img_tag_class = elements["img_tag_class"]
+            # print(self.img_tag_class)
+        else:
+            self.img_tag_class = ""
+
+        if "price_tag" in elements:
+            self.price_tag = elements["price_tag"]
 
         if "price_tag_property" in elements:
             self.price_tag_property = elements["price_tag_property"]
         else:
             self.price_tag_property = ""
 
-        self.price_tag_class = elements["price_tag_class"]
-        self.link_tag = elements["link_tag"]
-        self.link_tag_class = elements["link_tag_class"]
-        self.date_tag = elements["date_tag"]
-        self.date_tag_class = elements["date_tag_class"]
+        if "price_tag_class" in elements:
+            self.price_tag_class = elements["price_tag_class"]
+
+        if "link_tag" in elements:
+            self.link_tag = elements["link_tag"]
+
+        if "link_tag_class" in elements:
+            self.link_tag_class = elements["link_tag_class"]
+
+        if "date_tag" in elements:
+            self.date_tag = elements["date_tag"]
+
+        if "date_tag_class" in elements:
+            self.date_tag_class = elements["date_tag_class"]
         # Store list of annonces from each div element
         self.annonces_list = []
 
@@ -70,15 +96,20 @@ class ListParse(SiteParse):
 
         html_list_elems = super().site_parse()
 
+        print(html_list_elems)
+
         for elem in html_list_elems:
             annonce_dict = {}
 
-            id_annonce = elem.find(name=self.id_tag, class_=self.id_tag_class)
-            annonce_dict["id"] = id_annonce
+            if self.id_tag != "":
+                id_annonce = elem.find(name=self.id_tag, class_=self.id_tag_class)
+                annonce_dict["id"] = id_annonce
 
 
             # manage the case that the price div tag has a property "itemprop" instead of the traditional "class" property
             # we default as "class" as it is the standard
+
+            # price = elem(find(name=self.price_tag, self.price_tag_property=self.price_tag_class))
 
             if self.price_tag_property == 'itemprop':
                 price = elem.find(name=self.price_tag, itemprop=self.price_tag_class)
@@ -90,6 +121,8 @@ class ListParse(SiteParse):
 
 
             img = elem.find(name=self.img_tag, class_=self.img_tag_class)
+            # img = elem.find(name=self.img_tag)
+            # print(img)
             annonce_dict["img"] = img
 
             link = elem.find(name=self.link_tag, class_=self.link_tag_class)
