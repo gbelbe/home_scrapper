@@ -1,6 +1,7 @@
 # Property Scrapper is a project I write to help me find my new home in France
 
 [![Python application](https://github.com/gbelbe/property-scrapper/actions/workflows/python-app.yml/badge.svg)](https://github.com/gbelbe/property-scrapper/actions/workflows/python-app.yml)
+[![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/gbelbe/property-scrapper.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/gbelbe/property-scrapper/context:python)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/gbelbe/property-scrapper.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/gbelbe/property-scrapper/alerts/)
 
 ## main goal
