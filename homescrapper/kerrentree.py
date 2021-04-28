@@ -1,5 +1,4 @@
-from homescrapper.scrap_immo import SiteParse, ListParse
-from datetime import datetime
+from homescrapper.scrap_immo import ListParse
 import re
 
 BASE_URL = "http://www.kerentree-immobilier.fr"
@@ -21,24 +20,23 @@ ELEMENTS = {
 }
 
 
-        #
-        #     # annonce_dict["long_desc"] = img['longdesc']
-        #
-        #
-        #     lien = tag.find(name="a")
-        #     url = lien.get("href")
-        #     titre = lien.get("title")
-        #
-        #     annonce_dict["url"] = url
-        #     annonce_dict["titre"] = titre
-        #
-        #     annonces_list.append(annonce_dict)
-        #
-        # # We order the list by its most recent element: we must order a list with nested dictionary by one elem of the dict
-        # sorted_annonces = sorted(annonces_list, key=lambda k: k['maj_date'], reverse=True)
-        #
-        # return sorted_annonces
-        #
+#     # annonce_dict["long_desc"] = img['longdesc']
+#
+#
+#     lien = tag.find(name="a")
+#     url = lien.get("href")
+#     titre = lien.get("title")
+#
+#     annonce_dict["url"] = url
+#     annonce_dict["titre"] = titre
+#
+#     annonces_list.append(annonce_dict)
+#
+# # We order the list by its most recent element: we must order a list with nested dictionary by one elem of the dict
+# sorted_annonces = sorted(annonces_list, key=lambda k: k['maj_date'], reverse=True)
+#
+# return sorted_annonces
+#
 
 class KerrentreeSiteParse(ListParse):
     def __init__(self, base_url, list_url, list_tag, list_tag_class, elements):
@@ -52,7 +50,6 @@ class KerrentreeSiteParse(ListParse):
         html_list_elems = super().list_parse()
 
         for elem in html_list_elems:
-
             annonce_dict = {}
 
             annonce_dict['id'] = elem['id'].get_text().split()[2]
@@ -73,8 +70,6 @@ class KerrentreeSiteParse(ListParse):
             #     majdate = datetime.strptime(MAJ[1].strip().split()[2], '%d/%m/%Y')
 
             #     annonce_dict["maj_date"] = majdate
-
-
 
             annonces_list.append(annonce_dict)
 

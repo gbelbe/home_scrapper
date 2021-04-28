@@ -1,9 +1,8 @@
-from homescrapper.scrap_immo import SiteParse, ListParse
-from datetime import datetime
-import re
+from homescrapper.scrap_immo import ListParse
 
 BASE_URL = "https://kernot.notaires.fr"
-LIST_URL = "https://kernot.notaires.fr/annonces-immobilieres-SELARL-KERNOT-PAYS-BIGOUDEN-Alain-MALLEGOL-Celine-FRITZSCHE-Vincent-VARNOUX.html"
+LIST_URL = "https://kernot.notaires.fr/annonces-immobilieres-SELARL-KERNOT-PAYS-BIGOUDEN" \
+           "-Alain-MALLEGOL-Celine-FRITZSCHE-Vincent-VARNOUX.html"
 LIST_TAG = "div"
 LIST_TAG_CLASS = "bloc-annonce img-txt"
 ELEMENTS = {
@@ -38,8 +37,6 @@ class KernotSiteParse(ListParse):
             # print(annonce_dict)
             # string_price = elem['price'].get_text()
 
-
-
             price = elem['price']
             special_char = '€'
             annonce_dict['price'] = price.split(special_char, 1)[0]
@@ -55,12 +52,8 @@ class KernotSiteParse(ListParse):
             # TODO: finir l'intégration de la date avec datetime
 
             # MAJ = tag.find("p", class_="margin-top-10 height-50").find_all(text=True, recursive=False)
-
             #     majdate = datetime.strptime(MAJ[1].strip().split()[2], '%d/%m/%Y')
-
             #     annonce_dict["maj_date"] = majdate
-
-
 
             annonces_list.append(annonce_dict)
 

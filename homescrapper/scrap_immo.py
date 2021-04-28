@@ -26,10 +26,10 @@ class SiteParse:
         # retrieve the url from the web address
         website = requests.get(self.list_url)
         # check if status is ok http200
-        print(website)
+        # print(website)
         soup = BeautifulSoup(website.content, 'html.parser')
         # soup = soup.prettify()
-        print(soup)
+        # print(soup)
 
 
         # Grab all div tags with ID starting with "annonceXXX", that is showing the recap infos from the houses
@@ -47,8 +47,6 @@ class ListParse(SiteParse):
     def __init__(self, base_url, list_url, list_tag, list_tag_class, elements):
         # initialize list_url, tag and class from Parse_Site
         super().__init__(base_url, list_url, list_tag, list_tag_class)
-
-        print(elements)
 
         if "id_tag" in elements:
             self.id_tag = elements["id_tag"]
@@ -95,8 +93,6 @@ class ListParse(SiteParse):
         """retrieve html elements of each element of the list"""
 
         html_list_elems = super().site_parse()
-
-        print(html_list_elems)
 
         for elem in html_list_elems:
             annonce_dict = {}
