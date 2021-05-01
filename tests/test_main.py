@@ -1,5 +1,4 @@
 import sys
-# from homescrapper.kerrentree import ParseSite
 from homescrapper.scrap_immo import SiteParse, ListParse
 from homescrapper.rozenn import RozennSiteParse
 from homescrapper.kerrentree import KerrentreeSiteParse
@@ -27,7 +26,7 @@ ELEMENTS = {
 }
 
 
-def test_SiteParse():
+def test_site_parse():
     # site_url = "http://www.kerentree-immobilier.fr/recherche,basic.htm?idp=568148&idtt=2&idtypebien=2"
     # list_tag = "div"
     # list_tag_class = "btn btn-important btn-block bouton-ajouter-selection-detail btn-tooltip not-log"
@@ -38,16 +37,17 @@ def test_SiteParse():
     # assert len(a) != 0, 'the list is empty'
 
 
-def test_ListParse():
+def test_list_parse():
     a = ListParse(BASE_URL, LIST_URL, LIST_TAG, LIST_TAG_CLASS, ELEMENTS)
     assert len(a.list_parse()) >= 0
 
-def test_RozennSiteParse():
-    BASE_URL = "https://www.cabinetrozennmelscoet.com"
-    LIST_URL = "https://www.cabinetrozennmelscoet.com/a-vendre/1"
-    LIST_TAG = "li"
-    LIST_TAG_CLASS = "col-xs-12 col-sm-6 col-md-12 panelBien"
-    ELEMENTS = {
+
+def test_rozenn_site_parse():
+    base_url = "https://www.cabinetrozennmelscoet.com"
+    list_url = "https://www.cabinetrozennmelscoet.com/a-vendre/1"
+    list_tag = "li"
+    list_tag_class = "col-xs-12 col-sm-6 col-md-12 panelBien"
+    elements = {
         "id_tag": "span",
         "id_tag_class": "ref",
         "img_tag": "img",
@@ -61,16 +61,16 @@ def test_RozennSiteParse():
         "date_tag_class": "dateclass",
     }
 
-    a = RozennSiteParse(BASE_URL, LIST_URL, LIST_TAG, LIST_TAG_CLASS, ELEMENTS)
+    a = RozennSiteParse(base_url, list_url, list_tag, list_tag_class, elements)
     assert len(a.rozenn_site_parse()) >= 0
 
 
-def test_KerrentreeSiteParse():
-    BASE_URL = "http://www.kerentree-immobilier.fr"
-    LIST_URL = "http://www.kerentree-immobilier.fr/recherche,basic.htm?idp=568148&idtt=2&idtypebien=2"
-    LIST_TAG = "div"
-    LIST_TAG_CLASS = "row-fluid margin-bottom-20 conteneur-annonce"
-    ELEMENTS = {
+def test_kerrentree_site_parse():
+    base_url = "http://www.kerentree-immobilier.fr"
+    list_url = "http://www.kerentree-immobilier.fr/recherche,basic.htm?idp=568148&idtt=2&idtypebien=2"
+    list_tag = "div"
+    list_tag_class = "row-fluid margin-bottom-20 conteneur-annonce"
+    elements = {
         "id_tag": "div",
         "id_tag_class": "h4-like typo-action refannonce",
         "img_tag": "img",
@@ -84,17 +84,17 @@ def test_KerrentreeSiteParse():
         "date_tag_class": "margin-top-10 height-50",
     }
 
-    a = KerrentreeSiteParse(BASE_URL, LIST_URL, LIST_TAG, LIST_TAG_CLASS, ELEMENTS)
+    a = KerrentreeSiteParse(base_url, list_url, list_tag, list_tag_class, elements)
     assert len(a.kerrentree_site_parse()) >= 0
 
 
-def test_KernotSiteParse():
-    BASE_URL = "https://kernot.notaires.fr"
-    LIST_URL = "https://kernot.notaires.fr/annonces-immobilieres-SELARL-KERNOT-PAYS-BIGOUDEN" \
+def test_kernot_site_parse():
+    base_url = "https://kernot.notaires.fr"
+    list_url = "https://kernot.notaires.fr/annonces-immobilieres-SELARL-KERNOT-PAYS-BIGOUDEN" \
                "-Alain-MALLEGOL-Celine-FRITZSCHE-Vincent-VARNOUX.html"
-    LIST_TAG = "div"
-    LIST_TAG_CLASS = "bloc-annonce img-txt"
-    ELEMENTS = {
+    list_tag = "div"
+    list_tag_class = "bloc-annonce img-txt"
+    elements = {
         "img_tag": "img",
         "img_tag_class": "lazyload",
         "price_tag": "div",
@@ -105,5 +105,5 @@ def test_KernotSiteParse():
         "date_tag_class": "",
     }
 
-    a = KernotSiteParse(BASE_URL, LIST_URL, LIST_TAG, LIST_TAG_CLASS, ELEMENTS)
+    a = KernotSiteParse(base_url, list_url, list_tag, list_tag_class, elements)
     assert len(a.kernot_site_parse()) >= 0
