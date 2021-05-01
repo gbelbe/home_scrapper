@@ -29,7 +29,6 @@ class RozennSiteParse(ListParse):
         # retrieve site_parse method from ParseSite Parent Class
         annonces_list = []
 
-
         html_list_elems = super().list_parse()
 
         for elem in html_list_elems:
@@ -46,6 +45,7 @@ class RozennSiteParse(ListParse):
             annonces_list.append(annonce_dict)
 
         return annonces_list
+
 
 # instantiate an object annonces from class Rozenn
 annonces = RozennSiteParse(BASE_URL, LIST_URL, LIST_TAG, LIST_TAG_CLASS, ELEMENTS)
