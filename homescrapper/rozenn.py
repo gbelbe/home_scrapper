@@ -1,4 +1,4 @@
-from homescrapper.scrap_immo import SiteParse, ListParse
+from homescrapper.scrap_immo import ListParse
 
 BASE_URL = "https://www.cabinetrozennmelscoet.com"
 LIST_URL = "https://www.cabinetrozennmelscoet.com/a-vendre/1"

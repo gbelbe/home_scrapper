@@ -1,4 +1,4 @@
-from homescrapper.scrap_immo import SiteParse, ListParse
+from homescrapper.scrap_immo import ListParse
 
 BASE_URL = "https://www.leboncoin.fr"
 LIST_URL = "https://www.leboncoin.fr/recherche?category=9&locations=Pont-l%27Abb%C3%A9_29120__47.86686_-4.22395_4578_5000"
